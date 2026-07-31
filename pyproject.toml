@@ -1,0 +1,22 @@
+[project]
+name = "ephysiopandas"
+version = "0.1.2"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Robin Hayman", email = "robin.hayman@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "ephysiopy>=2.0.61",
+    "ipython>=9.9.0",
+    "phylib>=2.7.0",
+    "statannotations>=0.7.2",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
+
+# [tool.uv.sources]
+# ephysiopy = { path = "../ephysiopy", editable = true }
