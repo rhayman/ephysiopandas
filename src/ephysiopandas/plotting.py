@@ -344,7 +344,6 @@ def plot_spike_path_ratemap(
     trial.plot_spike_path(
         cluster,
         channel,
-        ms=1.5,
         equal_axes=True,
         ax=ax[0],
         **kws,
@@ -406,12 +405,13 @@ def plot_deciles(
     ax.set_xlabel("")
 
     # save the barplot
-    save_dir = Path.cwd()
+    save_dir = Path.cwd() / Path(trial_type)
 
     if "save_dir" in kws:
-        save_dir = kws["save_dir"]
-        if not save_dir.exists():
-            save_dir.mkdir(parents=True, exist_ok=True)
+        save_dir = Path(kws["save_dir"]) / Path(trial_type)
+
+    if not save_dir.exists():
+        save_dir.mkdir(parents=True, exist_ok=True)
 
     if save_dir is not None:
         fname = Path(f"{measure}_by_{groupby}_deciles.svg")

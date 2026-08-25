@@ -46,7 +46,7 @@ def get_mean_waveform(df: pd.DataFrame, **kws) -> pd.DataFrame:
 
     # ensure the dataframe is sorted by index so that the mean waveforms are in
     # the same order as the dataframe
-    df.sort_index(inplace=True)
+    # df.sort_index(inplace=True)
     # Assuming 50 samples per waveform
     mean_waveforms = np.empty((len(df), 50))
 
@@ -57,6 +57,8 @@ def get_mean_waveform(df: pd.DataFrame, **kws) -> pd.DataFrame:
             trial, int(row.cluster), int(row.channel), **kws
         )
         w = np.ravel(w)
+        if w.shape[0] != 50:
+            breakpoint()
         mean_waveforms[i, :] = w
         i += 1
 

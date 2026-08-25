@@ -59,7 +59,7 @@ def num_spikes(trial: Trial, cluster: int, channel: int, **kws) -> int:
 
 
 @print_measure_details
-def overdispersion(trial: Trial, cluster: int, channel: int, **kws):
+def overdispersion(trial: Trial, cluster: int, channel: int, **kws) -> float:
     """
     Calculates an overdispersion measure for the provided cluster
     following the method of Fenton et al., 2010.
@@ -89,7 +89,7 @@ def overdispersion(trial: Trial, cluster: int, channel: int, **kws):
 
 @single_or_list
 @print_measure_details
-def peak_rate(trial: Trial, cluster: int, channel: int, **kws) -> float:
+def peak_rate(trial: Trial, cluster: int, channel: int, **kws) -> list:
     """
     Get the peak firing rate for a given cluster and channel.
     This is the maximum firing rate calculated from the spike times.
@@ -126,7 +126,7 @@ def mean_rate(trial: Trial, cluster: int, channel: int, **kws) -> float:
 
 @single_or_list
 @print_measure_details
-def coherence(trial: Trial, cluster: int, channel: int, **kws) -> float:
+def coherence(trial: Trial, cluster: int, channel: int, **kws) -> list:
     """
     Calculate the coherence score for a given cluster in the trial.
     """
@@ -153,7 +153,7 @@ def coherence(trial: Trial, cluster: int, channel: int, **kws) -> float:
 
 @single_or_list
 @print_measure_details
-def spatial_sparsity(trial: Trial, cluster: int, channel: int, **kws) -> float:
+def spatial_sparsity(trial: Trial, cluster: int, channel: int, **kws) -> list:
     """
     Calculate the spatial sparsity score for a given cluster in the trial.
     This is a placeholder function, as the actual calculation
@@ -186,7 +186,7 @@ def spatial_sparsity(trial: Trial, cluster: int, channel: int, **kws) -> float:
 
 @single_or_list
 @print_measure_details
-def kl_spatial_sparsity(trial: Trial, cluster: int, channel: int, **kws) -> float:
+def kl_spatial_sparsity(trial: Trial, cluster: int, channel: int, **kws) -> list:
     """
     Calculate the KL spatial sparsity score for a given trial.
     Note this is a measure of how well sampled the environment is compared

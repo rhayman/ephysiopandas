@@ -12,7 +12,7 @@ from ephysiopy.common.fieldcalcs import (
     fancy_partition,
     simple_partition,
 )
-from ephysiopandas.data_io import load_trial
+from ephysiopy.io.bases import TrialInterface
 
 
 def print_dataframe_insert_details(func):
@@ -188,7 +188,7 @@ def get_date_from_trial(trial: Trial) -> datetime:
 
 
 def get_equal_bin_edges(
-    t1_pname: Path, t2_pname: Path, ppm=300, map_binsize=3
+    t1: TrialInterface, t2: TrialInterface, ppm=300, map_binsize=3
 ) -> list[np.ndarray]:
     """
     Calculate equal bin edges for two trials
@@ -202,9 +202,6 @@ def get_equal_bin_edges(
     -------
     list[np.ndarray] - the np.ndarray for the bin edges
     """
-
-    t1 = load_trial(t1_pname, MAP_BINSIZE=map_binsize)
-    t2 = load_trial(t2_pname, MAP_BINSIZE=map_binsize)
 
     xlims1 = t1.RateMap._x_lims
     xlims2 = t2.RateMap._x_lims
@@ -270,8 +267,7 @@ def get_field_props(
             cluster, channel, binsize=map_binsize, **kws
         )
     else:
-        binned_data = trial.get_rate_map(
-            cluster, channel, binsize=map_binsize, **kws)
+        binned_data = trial.get_rate_map(cluster, channel, binsize=map_binsize, **kws)
     # get the field properties
     if "fancy" in partition_method:
         _, _, label_image, _ = fancy_partition(

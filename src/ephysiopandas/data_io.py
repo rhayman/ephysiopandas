@@ -17,6 +17,7 @@ from ephysiopy.common.spikingcalcs import SpikeCalcsGeneric
 from ephysiopy.common.waveformcalcs import WaveformCalcsGeneric
 from ephysiopy.common.phasecoding import LFPOscillations
 from ephysiopandas.config import RecordingType
+from ephysiopandas.helpers import print_measure_details
 
 
 def save_dataframe(df: pd.DataFrame, fname: str, format="pkl") -> None:
@@ -209,7 +210,7 @@ def create_cluster_df(
     return cluster_df
 
 
-@lru_cache(maxsize=8)
+# @lru_cache(maxsize=8)
 def load_trial(pname: Path, **kws) -> TrialInterface:
     """
     Loads an TrialInterface (AxonaTrial or OpenEphysBase) object
@@ -375,6 +376,7 @@ def filter_trials_by_time(
     return t1, t2
 
 
+@print_measure_details
 def extract_mean_waveform(
     trial: TrialInterface, cluster: int, channel: int, **kws
 ) -> np.ndarray:
@@ -401,6 +403,7 @@ def extract_mean_waveform(
     is truncated here to match the length of the Axona waveforms (50 samples),
     so that PCA can be performed on the result(s)
     """
+    # breakpoint()
     W = get_WaveformCalcs(trial, cluster, channel, **kws)
     best_channel = W.get_best_channel()
     mean_waveform, _ = W.mean_waveform(best_channel)
@@ -408,9 +411,11 @@ def extract_mean_waveform(
     if np.shape(mean_waveform)[-1] > 50:
         # get the 1ms more or less corresponding to Axona
         # i.e. 200 microsecond pre spike, 800 post
-        mean_waveform = mean_waveform[30:63]
+        mean_waveform = mean_waveform[20:53]
         # resample to match 50 samples
-        mean_waveform = signal.resample_poly(mean_waveform, 50, 33, axis=-1)
+        mean_waveform = signal.resample_poly(
+            mean_waveform, 50, len(mean_waveform), axis=-1
+        )
         # multiply by 0.159 to match the microvolt scaling of Axona waveforms
         mean_waveform = mean_waveform * 0.159
         # get into microvolts to match Axona waveforms
@@ -419,7 +424,7 @@ def extract_mean_waveform(
     return mean_waveform
 
 
-@lru_cache(maxsize=8)
+# @lru_cache(maxsize=8)
 def get_WaveformCalcs(
     trial: TrialInterface, cluster: int, channel: int, **kws
 ) -> WaveformCalcsGeneric:
