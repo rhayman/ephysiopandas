@@ -451,6 +451,7 @@ def spike_width(trial: Trial, cluster: int, channel: int, **kws) -> float:
     S = get_WaveformCalcs(trial, cluster, channel)
     best_channel = S.get_best_channel()
     mean_waveform, _ = S.mean_waveform(best_channel)
+    mean_waveform = mean_waveform.flatten()
 
     if mean_waveform.shape[0] == 50:
         fs = 5e4  # 50 samples at 50 kHz
