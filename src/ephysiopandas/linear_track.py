@@ -298,8 +298,7 @@ def run_phase_precession_analysis(df: pd.DataFrame, **kws) -> pd.DataFrame:
                     except Exception:
                         pp_results = None
                     if pp_results:
-                        pp_dict[pname][(cluster, channel)
-                                       ][run_dir] = pp_results
+                        pp_dict[pname][(cluster, channel)][run_dir] = pp_results
                         # insert the results into the dataframe
                         for i, result in enumerate(pp_results):
                             # ignore nans etc

@@ -40,7 +40,6 @@ def save_dataframe(df: pd.DataFrame, fname: str, format="pkl") -> None:
     else:
         raise ValueError(f"Unsupported format: {format}")
     print(f"Saved DataFrame to {save_path}")
-    return
 
 
 def load_dataframe(fname: str) -> pd.DataFrame:

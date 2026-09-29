@@ -80,7 +80,7 @@ figure_params = {
     "ytick.major.size": 3,
     "ytick.left": True,
     "ytick.direction": "in",
-    "savefig.transparent": True,
+    "savefig.transparent": False,
     "savefig.bbox": "tight",
 }
 

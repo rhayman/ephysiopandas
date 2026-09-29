@@ -274,7 +274,7 @@ def grid_score(trial: Trial, cluster: int, channel: int, **kws) -> float:
         **kws,
     )
 
-    if "expanding" in kws.keys():
+    if "expanding" in kws:
         if kws["expanding"] is True:
             return fc.expanding_circle_gridscore(ratemap.binned_data[0])
         else:

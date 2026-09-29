@@ -384,9 +384,12 @@ def plot_deciles(
     trial_type : str
         The type of trial to plot (open_field or linear_track)
     """
+    assert measure in df.columns
+    assert groupby in df.columns
+
     df = df[df.environment == trial_type].reset_index(drop=True)
     # calculate deciles for each group
-    deciles = df.groupby(groupby)[measure].quantile(np.linspace(0, 0.9, 10)).unstack()
+    deciles = df.groupby(groupby)[measure].quantile(np.arange(0, 1, 0.1)).unstack()
 
     deciles = deciles.reset_index().melt(
         id_vars=groupby, var_name="decile", value_name=measure
@@ -425,10 +428,26 @@ def plot_deciles(
     # and for each group
 
     for group in df.groupby(groupby):
-        for decile in deciles["decile"].unique():
-            group_decile_df = group[1][
-                (group[1][measure] > decile) & (group[1][measure] < decile + 0.1)
-            ]
+        group_deciles = deciles[deciles[groupby] == group[0]]
+
+        for i in range(group_deciles.shape[0]):
+            decile = group_deciles.iloc[i]["decile"]
+
+            lower_bound = group_deciles.iloc[i][measure]
+
+            try:
+                upper_bound = group_deciles.iloc[i + 1][measure]
+                group_decile_df = group[1][
+                    (
+                        np.logical_and(
+                            group[1][measure] > lower_bound,
+                            group[1][measure] < upper_bound,
+                        )
+                    )
+                ]
+            except Exception as e:
+                group_decile_df = group[1][(group[1][measure] > lower_bound)]
+
             if not group_decile_df.empty:
                 # Get exemplar from this group/decile
                 exemplar = group_decile_df.iloc[0]
@@ -436,7 +455,7 @@ def plot_deciles(
                 # annotate the figure with group and decile info
                 fig = axs[0].get_figure()
                 fig.suptitle(
-                    f"{group[0]} - {decile} decile : {exemplar.spatial_info:.2f} bits/spike",
+                    f"{group[0]} - {decile} decile : {exemplar[measure]:.2f}",
                     fontsize=16,
                 )
                 save_name = Path(f"{group[0]}_{decile}_decile_{measure}.svg")
